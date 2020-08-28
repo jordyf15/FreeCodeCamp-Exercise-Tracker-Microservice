@@ -9,7 +9,7 @@ const dateformat=require('dateformat');
 
 dateformat.masks.myformat="ddd mmm dd yyyy";
 
-function objectIdChecker(id){
+function objectIdChecker(id){//check if is is valid
     if(idIsValid(id)==true){
         const convertedId=new ObjectId(id).toString();
         if(id==convertedId){
@@ -30,7 +30,7 @@ mongoose.connect(url,{useUnifiedTopology: true, useNewUrlParser: true})
     app.use(bodyparser.urlencoded({extended: true}))
 
     app.get('/',(req,res)=>{
-        res.sendFile(__dirname+'/index.html');
+        res.sendFile(__dirname+'/views/index.html');
     })
 
     app.post('/api/exercise/new-user',(req,res)=>{
@@ -54,7 +54,7 @@ mongoose.connect(url,{useUnifiedTopology: true, useNewUrlParser: true})
 
     app.get('/api/exercise/users',(req,res)=>{
         var userArray=[];
-        var userIndex;
+        var userIndex;//the user objects in the userArray
         function foreachfunc(item,index){
             userIndex={//take the username and id only
                 username: item.userName,
@@ -79,37 +79,35 @@ mongoose.connect(url,{useUnifiedTopology: true, useNewUrlParser: true})
         }else if(req.body.duration==""){
             res.send("Path `duration` is required.")
         }else{
-            var dateExercise;//beacuse of the different timezone of the database and my location we might have to
-            //increase the date by 1 for the database
-            if(req.body.date==""){
+            var dateExercise;//because the date might be empty so we need some conditions
+            if(req.body.date=="" || new Date(req.body.date)== "Invalid Date"){
                 dateExercise=new Date();
-                dateExercise.setDate(dateExercise.getDate()+1)
             }else{
                 dateExercise=new Date(req.body.date);
-                dateExercise.setDate(dateExercise.getDate()+1)
+                console.log(dateExercise)
             }
             var exercise=({
                 description: req.body.description,
                 duration: req.body.duration,
-                date: dateformat(dateExercise,"myformat")
+                date: dateExercise//dont need to format it here since it will converted to normal date again in the db
             })
             user.findOne({_id: req.body.userId})
             .then((result)=>{
                 if(!result){
                     throw new Error('id not found')//throw error if not user is found
                 }else{
-                    result.log.push(exercise)
+                    result.log.push(exercise)//push the new exercise to the user log
                     return result; 
                 }
             })
             .then((result)=>{
-                return result.save();
+                return result.save();//save the changes to user
             })
             .then((result)=>{
                 res.json({
                     _id: result._id,
                     username: result.userName,
-                    date: dateformat(req.body.date,"myformat"),
+                    date: dateformat(dateExercise,"myformat"),
                     duration: parseInt(req.body.duration),
                     description: req.body.description
                 })
