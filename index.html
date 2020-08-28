@@ -1,0 +1,52 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <div id="header">
+        <h1>Jordy's FreeCodeCamp Exercise Tracker Microservice</h1>
+    </div>
+    <div id="container">
+        <div id="form-users">
+            <form id="add-user" method="POST" action="/api/exercise/new-user">
+                <a id="form-header">Create a New User</a>
+                <a id="form-route">POST /api/exercise/new-user</a>
+                <input type="text" placeholder="username" name="username">
+                <button id="submit-button" type="submit">Submit</button>
+            </form>
+            <div id="get-user">
+                <a id="form-header">Get Users</a>
+                <a id="form-route">GET /api/exercise/users</a>
+                <button id="submit-button" onclick="location.href='/api/exercise/users'">Submit</button>
+            </div>
+        </div>
+        <form id="add-exercise" method="POST" action="/api/exercise/add">
+            <a id="form-header">Add Exercises</a>
+            <a id="form-route">POST /api/exercise/add</a>
+            <input type="text" placeholder="userId*" name="userId">
+            <input type="text" placeholder="description*" name="description"></input>
+            <input type="number" placeholder="duration*(mins.)" name="duration"></input>
+            <input type="text" placeholder="date (yyyy-mm-dd)" name="date"></input>
+            <button id="submit-button" type="submit">Submit</button>
+        </form>
+        <div id="get-exercise" >
+            <a id="form-header">Get Exercises</a>
+            <a id="form-route">GET /api/exercise/log?{userId}[&from][&to][&limit]</a>
+            <input type="text" placeholder="userId*" id="getUserId">
+            <input type="text" placeholder="From date (yyyy-mm-dd)" id="getFromDate"></input>
+            <input type="text" placeholder="To date (yyyy-mm-dd)"  id="getToDate"></input>
+            <input type="number" placeholder="Limit" id="getLimit"></input>
+            <button onclick="location.href=getExercise()">Submit</button>
+        </div>
+    </div>
+    <div id="footer">
+        Created by <a href="https://www.freecodecamp.org/jordyf">Jordy Ferdian</a>  
+        <button onclick="location.href='https://github.com/jordyf15'" class="fa fa-github fa-lg"></button>
+        <button onclick="location.href='https://www.linkedin.com/in/jordy-ferdian-3606041a7'" class="fa fa-linkedin-square fa-lg"></button><br>
+        For FreeCodeCamp <a href="https://www.freecodecamp.org/learn/apis-and-microservices/apis-and-microservices-projects/exercise-tracker">
+            Exercise Tracker Microservice</a> project
+    </div>
+    <script src="script.js"></script>
+</body>
